@@ -1,3 +1,6 @@
+[![pub package](https://img.shields.io/pub/v/settings_manager.svg?label=settings_manager&color=blue)](https://pub.dartlang.org/packages/settings_manager)
+[![pub package](https://img.shields.io/pub/v/settings_gen.svg?label=settings_gen&color=blue)](https://pub.dartlang.org/packages/settings_gen)
+
 # settings_gen
 
 Code generator for `settings_manager` built for use with SharedPreferences. This will add Streams and ValueNotifiers for each field.
