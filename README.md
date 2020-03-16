@@ -3,7 +3,7 @@
 
 # Settings Manager
 
-- Flutter settings store built on top of shared preferences.
+- Flutter settings store built on top of [shared preferences](https://pub.dev/packages/shared_preferences).
 - Code Generator for supported types
 
 ## Usage
