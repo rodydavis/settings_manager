@@ -369,10 +369,10 @@ packages:
   settings_manager:
     dependency: "direct main"
     description:
-      path: "../packages/settings_manager"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: settings_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   shared_preferences:
     dependency: "direct main"
     description:

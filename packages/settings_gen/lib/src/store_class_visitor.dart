@@ -74,7 +74,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..defaultValue = annotation.getField('defaultValue').toBoolValue()
         ..addStream = annotation.getField('addStream').toBoolValue()
         ..addValueNotifier =
-            annotation.getField('addValueNotifer').toBoolValue()
+            annotation.getField('addValueNotifier').toBoolValue()
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.boolSettings.add(template);
@@ -86,7 +86,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..defaultValue = annotation.getField('defaultValue').toStringValue()
         ..addStream = annotation.getField('addStream').toBoolValue()
         ..addValueNotifier =
-            annotation.getField('addValueNotifer').toBoolValue()
+            annotation.getField('addValueNotifier').toBoolValue()
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.stringSettings.add(template);
@@ -98,7 +98,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..defaultValue = annotation.getField('defaultValue').toIntValue()
         ..addStream = annotation.getField('addStream').toBoolValue()
         ..addValueNotifier =
-            annotation.getField('addValueNotifer').toBoolValue()
+            annotation.getField('addValueNotifier').toBoolValue()
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.intSettings.add(template);
@@ -110,7 +110,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..defaultValue = annotation.getField('defaultValue').toDoubleValue()
         ..addStream = annotation.getField('addStream').toBoolValue()
         ..addValueNotifier =
-            annotation.getField('addValueNotifer').toBoolValue()
+            annotation.getField('addValueNotifier').toBoolValue()
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.doubleSettings.add(template);
@@ -127,7 +127,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
             .toList()
         ..addStream = annotation.getField('addStream').toBoolValue()
         ..addValueNotifier =
-            annotation.getField('addValueNotifer').toBoolValue()
+            annotation.getField('addValueNotifier').toBoolValue()
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.stringListSettings.add(template);

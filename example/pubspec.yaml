@@ -7,8 +7,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  settings_manager:
-    path: ../packages/settings_manager
+  settings_manager: 1.0.3
   cupertino_icons: ^0.1.3
   shared_preferences: ^0.5.6+3
 

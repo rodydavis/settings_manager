@@ -369,7 +369,7 @@ packages:
       name: settings_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.3"
   shelf:
     dependency: transitive
     description:

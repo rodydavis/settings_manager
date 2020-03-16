@@ -1,12 +1,12 @@
 targets:
   $default:
     builders:
-      settings_gen|mobx_generator:
+      settings_gen:
         enabled: true
 
 builders:
-  mobx_generator:
-    target: ':store_generator'
+  settings_gen:
+    target: ':settings_gen'
     import: 'package:settings_gen/builder.dart'
     builder_factories: ['storeGenerator']
     build_extensions: { '.dart': ['.store.g.part'] }
