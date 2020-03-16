@@ -1,16 +1,17 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
-import 'package:settings_gen/src/errors.dart';
-import 'package:settings_gen/src/template/store.dart';
-import 'package:settings_gen/src/template/util.dart';
-import 'package:settings_gen/src/type_names.dart';
 import 'package:settings_manager/settings_manager.dart';
 import 'package:settings_manager/src/api/annotations.dart'
     show BoolSetting, SettingsConfig;
 import 'package:source_gen/source_gen.dart';
 
+import 'errors.dart';
 import 'template/bool_setting.dart';
+import 'template/store.dart';
+import 'template/string_setting.dart';
+import 'template/util.dart';
+import 'type_names.dart';
 
 class StoreClassVisitor extends SimpleElementVisitor {
   StoreClassVisitor(
@@ -28,6 +29,7 @@ class StoreClassVisitor extends SimpleElementVisitor {
   }
 
   final _boolSettingChecker = const TypeChecker.fromRuntime(BoolSetting);
+  final _stringSettingChecker = const TypeChecker.fromRuntime(StringSetting);
 
   StoreTemplate _storeTemplate;
 
@@ -55,22 +57,30 @@ class StoreClassVisitor extends SimpleElementVisitor {
 
   @override
   void visitFieldElement(FieldElement element) {
-    if (!_boolSettingChecker.hasAnnotationOfExact(element)) {
-      return;
-    }
-
     if (_fieldIsNotValid(element)) {
       return;
     }
 
-    final ba = _boolSettingChecker.firstAnnotationOfExact(element);
-    ba.getField('defaultValue').toBoolValue();
-    final template = BoolSettingTemplate()
-      ..defaultValue = ba.getField('defaultValue').toBoolValue()
-      ..isPrivate = element.isPrivate
-      ..name = element.name;
+    if (_boolSettingChecker.hasAnnotationOfExact(element)) {
+      final annotation = _boolSettingChecker.firstAnnotationOfExact(element);
+      final template = BoolSettingTemplate()
+        ..defaultValue = annotation.getField('defaultValue').toBoolValue()
+        ..addStream = annotation.getField('addStream').toBoolValue()
+        ..addValueNotifer = annotation.getField('addValueNotifer').toBoolValue()
+        ..isPrivate = element.isPrivate
+        ..name = element.name;
+      _storeTemplate.boolSettings.add(template);
+    }
 
-    _storeTemplate.boolSettings.add(template);
+    if (_stringSettingChecker.hasAnnotationOfExact(element)) {
+      final annotation = _stringSettingChecker.firstAnnotationOfExact(element);
+      final template = StringSettingTemplate()
+        ..defaultValue = annotation.getField('defaultValue').toStringValue()
+        ..isPrivate = element.isPrivate
+        ..name = element.name;
+      _storeTemplate.stringSettings.add(template);
+    }
+
     return;
   }
 

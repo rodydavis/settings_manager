@@ -1,7 +1,9 @@
-import 'package:settings_gen/src/template/comma_list.dart';
-import 'package:settings_gen/src/template/bool_setting.dart';
-import 'package:settings_gen/src/template/params.dart';
-import 'package:settings_gen/src/template/rows.dart';
+import 'bool_setting.dart';
+import 'comma_list.dart';
+import 'params.dart';
+import 'rows.dart';
+import 'setting_impl.dart';
+import 'string_setting.dart';
 
 class MixinStoreTemplate extends StoreTemplate {
   String get typeName => '_\$$publicTypeName';
@@ -23,6 +25,7 @@ abstract class StoreTemplate {
   String parentTypeName;
 
   final Rows<BoolSettingTemplate> boolSettings = Rows();
+  final Rows<StringSettingTemplate> stringSettings = Rows();
   final List<String> toStringList = [];
 
   bool generateToString = false;
@@ -36,29 +39,41 @@ abstract class StoreTemplate {
     final sb = StringBuffer();
 
     sb.writeln('SharedPreferences prefs;');
+    sb.writeln(
+        'final _controller = StreamController<$publicTypeName>.broadcast();');
+    sb.writeln(
+        'Stream<$publicTypeName> get stream => _controller.stream;');
     sb.writeln();
-    final _boolSettings = boolSettings.templates
-        .whereType<BoolSettingTemplate>()
+    List<SettingsImpl> _settingsImpl = [];
+    _settingsImpl.addAll(boolSettings.templates
+        .whereType<SettingsImpl>()
         .map((t) => t)
-        .toList();
+        .toList());
+    _settingsImpl.addAll(stringSettings.templates
+        .whereType<SettingsImpl>()
+        .map((t) => t)
+        .toList());
 
     sb.writeln(' Future<bool> init() async {');
-    for (final boolSetting in _boolSettings) {
-      sb.writeln(boolSetting.preInit());
+    for (final setting in _settingsImpl) {
+      sb.writeln(setting.preInit());
     }
     sb.writeln(' prefs = await SharedPreferences.getInstance();');
-    for (final boolSetting in _boolSettings) {
-      sb.writeln(boolSetting.postInit());
+    for (final setting in _settingsImpl) {
+      sb.writeln(setting.postInit());
     }
     sb.writeln(' return prefs != null;');
     sb.writeln('  }');
     sb.writeln();
     sb.writeln('$boolSettings');
     sb.writeln();
+    sb.writeln('$stringSettings');
+    sb.writeln();
     sb.writeln(' void dispose() {');
-    for (final boolSetting in _boolSettings) {
-      sb.writeln(boolSetting.dispose());
+    for (final setting in _settingsImpl) {
+      sb.writeln(setting.dispose());
     }
+    sb.writeln('_controller.close();');
     sb.writeln('  }');
     sb.writeln();
 

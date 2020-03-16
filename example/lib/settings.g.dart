@@ -10,17 +10,21 @@ part of 'settings.dart';
 
 mixin _$Settings on SettingsBase, SettingsStore {
   SharedPreferences prefs;
+  final _controller = StreamController<Settings>.broadcast();
+  Stream<Settings> get stream => _controller.stream;
 
   Future<bool> init() async {
-    _darkModeController.add(false);
+    darkModeNotify(false);
+    _defaultUserIdController.add('none');
     prefs = await SharedPreferences.getInstance();
-    _darkModeController.add(darkMode);
+    darkModeNotify(darkMode);
+    _defaultUserIdController.add(defaultUserId);
     return prefs != null;
   }
 
   final _darkModeController = StreamController<bool>.broadcast();
   Stream<bool> get darkModeStream => _darkModeController.stream;
-
+  final darkModeNotifier = ValueNotifier<bool>(null);
   @override
   bool get darkMode {
     return prefs.getBool('darkMode') ?? false;
@@ -34,13 +38,43 @@ mixin _$Settings on SettingsBase, SettingsStore {
   Future<bool> darkModeAsync(bool value) async {
     final success = await prefs.setBool('darkMode', value);
     if (success) {
-      _darkModeController.add(value);
+      darkModeNotify(value);
+    }
+    return success;
+  }
+
+  void darkModeNotify(bool value) {
+    _darkModeController.add(value);
+    darkModeNotifier.value = value;
+    _controller.add(this);
+  }
+
+  final _defaultUserIdController = StreamController<String>.broadcast();
+  Stream<String> get defaultUserIdStream => _defaultUserIdController.stream;
+
+  @override
+  String get defaultUserId {
+    return prefs.getString('defaultUserId') ?? 'none';
+  }
+
+  @override
+  set defaultUserId(String value) {
+    defaultUserIdAsync(value);
+  }
+
+  Future<bool> defaultUserIdAsync(String value) async {
+    final success = await prefs.setString('defaultUserId', value);
+    if (success) {
+      _defaultUserIdController.add(value);
     }
     return success;
   }
 
   void dispose() {
     _darkModeController.close();
+
+    _defaultUserIdController.close();
+    _controller.close();
   }
 
   @override

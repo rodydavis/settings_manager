@@ -7,6 +7,23 @@ class SettingsConfig {
 }
 
 class BoolSetting {
-  const BoolSetting({this.defaultValue});
+  const BoolSetting({
+    this.defaultValue,
+    this.addStream = true,
+    this.addValueNotifer = true,
+  });
   final bool defaultValue;
+  final bool addStream;
+  final bool addValueNotifer;
+}
+
+class StringSetting {
+  const StringSetting({
+    this.defaultValue,
+    this.addStream = true,
+    this.addValueNotifer = true,
+  });
+  final String defaultValue;
+  final bool addStream;
+  final bool addValueNotifer;
 }
