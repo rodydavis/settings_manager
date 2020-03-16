@@ -14,4 +14,10 @@ abstract class SettingsBase with SettingsStore {
 
   @StringSetting(defaultValue: 'none')
   String userId;
+
+  @IntSetting(defaultValue: 0)
+  int enumIndex;
+
+  @DoubleSetting(defaultValue: 0)
+  double radialValue;
 }

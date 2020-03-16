@@ -27,3 +27,25 @@ class StringSetting {
   final bool addStream;
   final bool addValueNotifer;
 }
+
+class IntSetting {
+  const IntSetting({
+    this.defaultValue,
+    this.addStream = true,
+    this.addValueNotifer = true,
+  });
+  final int defaultValue;
+  final bool addStream;
+  final bool addValueNotifer;
+}
+
+class DoubleSetting {
+  const DoubleSetting({
+    this.defaultValue,
+    this.addStream = true,
+    this.addValueNotifer = true,
+  });
+  final double defaultValue;
+  final bool addStream;
+  final bool addValueNotifer;
+}

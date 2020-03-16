@@ -1,7 +1,7 @@
 import 'setting_impl.dart';
 
-class StringSettingTemplate implements SettingsImpl {
-  String defaultValue;
+class DoubleSettingTemplate implements SettingsImpl {
+  double defaultValue;
   String name;
   bool isPrivate;
   bool addStream = true;
@@ -9,7 +9,7 @@ class StringSettingTemplate implements SettingsImpl {
 
   @override
   String preInit() {
-    return "${name}Notify('$defaultValue');";
+    return '${name}Notify($defaultValue);';
   }
 
   @override
@@ -31,37 +31,36 @@ class StringSettingTemplate implements SettingsImpl {
     final sb = StringBuffer();
     if (addStream) {
       sb.writeln(
-          'final _${name}Controller = StreamController<String>.broadcast();');
-      sb.writeln(
-          'Stream<String> get ${name}Stream => _${name}Controller.stream;');
+          'final _${name}Controller = StreamController<double>.broadcast();');
+      sb.writeln('Stream<double> get ${name}Stream => _${name}Controller.stream;');
     }
     if (addValueNotifer) {
-      sb.writeln('final ${name}Notifier = ValueNotifier<String>(null);');
+      sb.writeln('final ${name}Notifier = ValueNotifier<double>(null);');
     }
 
     sb.writeln("""
-    
+
     @override
-    String get $name {
-      return prefs.getString('$name') ?? '$defaultValue';
+    double get $name {
+      return prefs.getDouble('$name') ?? $defaultValue;
     }
 
     @override
-    set $name(String value) {
+    set $name(double value) {
       ${name}Async(value);
     }
 
-    Future<bool> ${name}Async(String value) async {
-      final success = await prefs.setString('$name', value);
+    Future<bool> ${name}Async(double value) async {
+      final success = await prefs.setDouble('$name', value);
       if (success) {
           ${name}Notify(value);
       }
       return success;
     }
-
+    
 """);
 
-    sb.writeln('void ${name}Notify(String value) {');
+    sb.writeln('void ${name}Notify(double value) {');
     if (addStream) {
       sb.writeln(' _${name}Controller.add(value);');
     }

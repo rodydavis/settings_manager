@@ -40,6 +40,7 @@ class BoolSettingTemplate implements SettingsImpl {
     }
 
     sb.writeln("""
+
     @override
     bool get $name {
       return prefs.getBool('$name') ?? $defaultValue;
@@ -57,6 +58,7 @@ class BoolSettingTemplate implements SettingsImpl {
       }
       return success;
     }
+    
 """);
 
     sb.writeln('void ${name}Notify(bool value) {');

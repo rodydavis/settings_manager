@@ -1,5 +1,7 @@
 import 'bool_setting.dart';
 import 'comma_list.dart';
+import 'double_setting.dart';
+import 'int_setting.dart';
 import 'params.dart';
 import 'rows.dart';
 import 'setting_impl.dart';
@@ -26,6 +28,8 @@ abstract class StoreTemplate {
 
   final Rows<BoolSettingTemplate> boolSettings = Rows();
   final Rows<StringSettingTemplate> stringSettings = Rows();
+  final Rows<IntSettingTemplate> intSettings = Rows();
+  final Rows<DoubleSettingTemplate> doubleSettings = Rows();
   final List<String> toStringList = [];
 
   bool generateToString = false;
@@ -41,19 +45,21 @@ abstract class StoreTemplate {
     sb.writeln('SharedPreferences prefs;');
     sb.writeln(
         'final _controller = StreamController<$publicTypeName>.broadcast();');
-    sb.writeln(
-        'Stream<$publicTypeName> get stream => _controller.stream;');
+    sb.writeln('Stream<$publicTypeName> get stream => _controller.stream;');
     sb.writeln();
     List<SettingsImpl> _settingsImpl = [];
-    _settingsImpl.addAll(boolSettings.templates
-        .whereType<SettingsImpl>()
-        .map((t) => t)
-        .toList());
-    _settingsImpl.addAll(stringSettings.templates
-        .whereType<SettingsImpl>()
-        .map((t) => t)
-        .toList());
-
+    _settingsImpl.addAll(
+      boolSettings.templates.whereType<SettingsImpl>().map((t) => t).toList(),
+    );
+    _settingsImpl.addAll(
+      stringSettings.templates.whereType<SettingsImpl>().map((t) => t).toList(),
+    );
+    _settingsImpl.addAll(
+      intSettings.templates.whereType<SettingsImpl>().map((t) => t).toList(),
+    );
+    _settingsImpl.addAll(
+      doubleSettings.templates.whereType<SettingsImpl>().map((t) => t).toList(),
+    );
     sb.writeln(' Future<bool> init() async {');
     for (final setting in _settingsImpl) {
       sb.writeln(setting.preInit());
@@ -69,6 +75,10 @@ abstract class StoreTemplate {
     sb.writeln();
     sb.writeln('$stringSettings');
     sb.writeln();
+    sb.writeln('$intSettings');
+    sb.writeln();
+    sb.writeln('$doubleSettings');
+    sb.writeln();
     sb.writeln(' void dispose() {');
     for (final setting in _settingsImpl) {
       sb.writeln(setting.dispose());
@@ -82,9 +92,21 @@ abstract class StoreTemplate {
     if (generateToString) {
       final publicBoolSettings = boolSettings.templates
         ..removeWhere((element) => element.isPrivate);
+      final publicStringSettings = stringSettings.templates
+        ..removeWhere((element) => element.isPrivate);
+      final publicIntSettings = intSettings.templates
+        ..removeWhere((element) => element.isPrivate);
+      final publicDoubleSettings = doubleSettings.templates
+        ..removeWhere((element) => element.isPrivate);
 
       toStringList
         ..addAll(publicBoolSettings.map(
+            (current) => '${current.name}: \${${current.name}.toString()}'))
+        ..addAll(publicStringSettings.map(
+            (current) => '${current.name}: \${${current.name}.toString()}'))
+        ..addAll(publicIntSettings.map(
+            (current) => '${current.name}: \${${current.name}.toString()}'))
+        ..addAll(publicDoubleSettings.map(
             (current) => '${current.name}: \${${current.name}.toString()}'));
 
       toStringMethod = '''

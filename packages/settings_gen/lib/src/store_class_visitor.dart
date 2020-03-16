@@ -1,6 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
+import 'package:settings_gen/src/template/double_setting.dart';
+import 'package:settings_gen/src/template/int_setting.dart';
 import 'package:settings_manager/settings_manager.dart';
 import 'package:settings_manager/src/api/annotations.dart'
     show BoolSetting, SettingsConfig;
@@ -30,6 +32,8 @@ class StoreClassVisitor extends SimpleElementVisitor {
 
   final _boolSettingChecker = const TypeChecker.fromRuntime(BoolSetting);
   final _stringSettingChecker = const TypeChecker.fromRuntime(StringSetting);
+  final _intSettingChecker = const TypeChecker.fromRuntime(IntSetting);
+  final _doubleSettingChecker = const TypeChecker.fromRuntime(DoubleSetting);
 
   StoreTemplate _storeTemplate;
 
@@ -79,6 +83,24 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.stringSettings.add(template);
+    }
+
+    if (_intSettingChecker.hasAnnotationOfExact(element)) {
+      final annotation = _intSettingChecker.firstAnnotationOfExact(element);
+      final template = IntSettingTemplate()
+        ..defaultValue = annotation.getField('defaultValue').toIntValue()
+        ..isPrivate = element.isPrivate
+        ..name = element.name;
+      _storeTemplate.intSettings.add(template);
+    }
+
+    if (_doubleSettingChecker.hasAnnotationOfExact(element)) {
+      final annotation = _doubleSettingChecker.firstAnnotationOfExact(element);
+      final template = DoubleSettingTemplate()
+        ..defaultValue = annotation.getField('defaultValue').toDoubleValue()
+        ..isPrivate = element.isPrivate
+        ..name = element.name;
+      _storeTemplate.doubleSettings.add(template);
     }
 
     return;
