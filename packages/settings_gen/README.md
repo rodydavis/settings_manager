@@ -7,7 +7,7 @@ Code generator for `settings_manager` built for use with SharedPreferences. This
 
 ```
 $> cd $YOUR_PROJECT_DIR
-\$> flutter packages pub run build_runner build
+$> flutter packages pub run build_runner build
 
 ```
 
