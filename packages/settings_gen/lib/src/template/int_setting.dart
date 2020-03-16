@@ -5,7 +5,7 @@ class IntSettingTemplate implements SettingsImpl {
   String name;
   bool isPrivate;
   bool addStream = true;
-  bool addValueNotifer = true;
+  bool addValueNotifier = true;
 
   @override
   String preInit() {
@@ -34,7 +34,7 @@ class IntSettingTemplate implements SettingsImpl {
           'final _${name}Controller = StreamController<int>.broadcast();');
       sb.writeln('Stream<int> get ${name}Stream => _${name}Controller.stream;');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('final ${name}Notifier = ValueNotifier<int>(null);');
     }
 
@@ -57,14 +57,14 @@ class IntSettingTemplate implements SettingsImpl {
       }
       return success;
     }
-    
+
 """);
 
     sb.writeln('void ${name}Notify(int value) {');
     if (addStream) {
       sb.writeln(' _${name}Controller.add(value);');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');

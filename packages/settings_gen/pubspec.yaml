@@ -14,8 +14,7 @@ dependencies:
   meta: ^1.1.0
   path: ^1.6.2
   source_gen: ^0.9.4
-  settings_manager:
-    path: ../settings_manager
+  settings_manager: any
 
 dev_dependencies:
   build_runner: ^1.7.2

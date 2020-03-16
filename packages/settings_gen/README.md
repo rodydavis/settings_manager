@@ -1,47 +1,41 @@
 # settings_gen
 
-<a href="https://flutter.dev/docs/development/packages-and-plugins/favorites">
-<img height="128" src="https://github.com/mobxjs/mobx.dart/raw/master/docs/src/images/flutter-favorite.png">
-</a>
-<br><br>
-
-[![pub package](https://img.shields.io/pub/v/settings_gen.svg?label=settings_gen&color=blue)](https://pub.dartlang.org/packages/settings_gen)
-[![Build Status](https://github.com/mobxjs/mobx.dart/workflows/Build/badge.svg)](https://github.com/mobxjs/mobx.dart/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/mobxjs/mobx.dart/master.svg)](https://codecov.io/gh/mobxjs/mobx.dart)
-
-> MobX Code Generation library
-
-Adds support for annotating your MobX code with **`@observable`**, **`@computed`**, **`@action`**, making it
-super simple to use MobX.
-
-> Note that these annotations only work inside store-classes.
-
-**store-classes** are abstract and use the **`Store`** mixin. When you run the `build_runner`, it will automatically generate the `*.g.dart file` that must be imported in your file.
+Code generator for `settings_manager` built for use with SharedPreferences. This will add Streams and ValueNotifiers for each field.
 
 ```
 $> cd $YOUR_PROJECT_DIR
-$> flutter packages pub run build_runner build
+\$> flutter packages pub run build_runner build
+
 ```
 
 ### Example
 
 ```dart
-import 'package:mobx/mobx.dart';
+import 'dart:async';
 
-// Include generated file
-part 'todos.g.dart';
+import 'package:flutter/material.dart';
+import 'package:settings_manager/settings_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// This is the class used by rest of your codebase
-class Todo = TodoBase with _$Todo;
+part 'settings.g.dart';
 
-// The store-class
-abstract class TodoBase with SettingsStore {
-  TodoBase(this.description);
+class Settings = SettingsBase with _$Settings;
 
-  @observable
-  String description = '';
+abstract class SettingsBase with SettingsStore {
+  @BoolSetting(defaultValue: false)
+  bool darkMode;
 
-  @observable
-  bool done = false;
+  @StringSetting(defaultValue: 'none')
+  String userId;
+
+  @IntSetting(defaultValue: 0)
+  int counterValue;
+
+  @DoubleSetting(defaultValue: 0)
+  double radialValue;
+
+  @StringListSetting(defaultValue: [])
+  List<String> savedItems;
 }
-```
+
+````

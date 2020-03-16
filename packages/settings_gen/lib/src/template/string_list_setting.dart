@@ -5,7 +5,7 @@ class StringListSettingTemplate implements SettingsImpl {
   String name;
   bool isPrivate;
   bool addStream = true;
-  bool addValueNotifer = true;
+  bool addValueNotifier = true;
 
   @override
   String preInit() {
@@ -35,7 +35,7 @@ class StringListSettingTemplate implements SettingsImpl {
       sb.writeln(
           'Stream<List<String>> get ${name}Stream => _${name}Controller.stream;');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('final ${name}Notifier = ValueNotifier<List<String>>(null);');
     }
 
@@ -65,7 +65,7 @@ class StringListSettingTemplate implements SettingsImpl {
     if (addStream) {
       sb.writeln(' _${name}Controller.add(value);');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');

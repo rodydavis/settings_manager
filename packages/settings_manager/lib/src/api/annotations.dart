@@ -10,54 +10,53 @@ class BoolSetting {
   const BoolSetting({
     this.defaultValue,
     this.addStream = true,
-    this.addValueNotifer = true,
+    this.addValueNotifier = true,
   });
   final bool defaultValue;
   final bool addStream;
-  final bool addValueNotifer;
+  final bool addValueNotifier;
 }
 
 class StringSetting {
   const StringSetting({
     this.defaultValue,
     this.addStream = true,
-    this.addValueNotifer = true,
+    this.addValueNotifier = true,
   });
   final String defaultValue;
   final bool addStream;
-  final bool addValueNotifer;
+  final bool addValueNotifier;
 }
 
 class IntSetting {
   const IntSetting({
     this.defaultValue,
     this.addStream = true,
-    this.addValueNotifer = true,
+    this.addValueNotifier = true,
   });
   final int defaultValue;
   final bool addStream;
-  final bool addValueNotifer;
+  final bool addValueNotifier;
 }
 
 class DoubleSetting {
   const DoubleSetting({
     this.defaultValue,
     this.addStream = true,
-    this.addValueNotifer = true,
+    this.addValueNotifier = true,
   });
   final double defaultValue;
   final bool addStream;
-  final bool addValueNotifer;
+  final bool addValueNotifier;
 }
-
 
 class StringListSetting {
   const StringListSetting({
     this.defaultValue,
     this.addStream = true,
-    this.addValueNotifer = true,
+    this.addValueNotifier = true,
   });
   final List<String> defaultValue;
   final bool addStream;
-  final bool addValueNotifer;
+  final bool addValueNotifier;
 }

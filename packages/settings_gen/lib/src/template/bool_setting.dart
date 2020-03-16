@@ -5,7 +5,7 @@ class BoolSettingTemplate implements SettingsImpl {
   String name;
   bool isPrivate;
   bool addStream = true;
-  bool addValueNotifer = true;
+  bool addValueNotifier = true;
 
   @override
   String preInit() {
@@ -35,7 +35,7 @@ class BoolSettingTemplate implements SettingsImpl {
       sb.writeln(
           'Stream<bool> get ${name}Stream => _${name}Controller.stream;');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('final ${name}Notifier = ValueNotifier<bool>(null);');
     }
 
@@ -58,14 +58,14 @@ class BoolSettingTemplate implements SettingsImpl {
       }
       return success;
     }
-    
+
 """);
 
     sb.writeln('void ${name}Notify(bool value) {');
     if (addStream) {
       sb.writeln(' _${name}Controller.add(value);');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');

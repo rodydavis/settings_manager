@@ -5,7 +5,7 @@ class StringSettingTemplate implements SettingsImpl {
   String name;
   bool isPrivate;
   bool addStream = true;
-  bool addValueNotifer = true;
+  bool addValueNotifier = true;
 
   @override
   String preInit() {
@@ -35,12 +35,12 @@ class StringSettingTemplate implements SettingsImpl {
       sb.writeln(
           'Stream<String> get ${name}Stream => _${name}Controller.stream;');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('final ${name}Notifier = ValueNotifier<String>(null);');
     }
 
     sb.writeln("""
-    
+
     @override
     String get $name {
       return prefs.getString('$name') ?? '$defaultValue';
@@ -65,7 +65,7 @@ class StringSettingTemplate implements SettingsImpl {
     if (addStream) {
       sb.writeln(' _${name}Controller.add(value);');
     }
-    if (addValueNotifer) {
+    if (addValueNotifier) {
       sb.writeln('${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');

@@ -315,7 +315,7 @@
     },
     {
       "name": "settings_manager",
-      "rootUri": "../../settings_manager",
+      "rootUri": "file:///usr/local/Caskroom/flutter/1.2.1/flutter/.pub-cache/hosted/pub.dartlang.org/settings_manager-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -482,7 +482,7 @@
       "languageVersion": "2.6"
     }
   ],
-  "generated": "2020-03-16T06:37:27.219359Z",
+  "generated": "2020-03-16T09:45:51.479862Z",
   "generator": "pub",
   "generatorVersion": "2.8.0-dev.12.0.flutter-9983424a3c"
 }
