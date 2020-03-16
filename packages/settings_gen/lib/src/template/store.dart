@@ -5,6 +5,7 @@ import 'int_setting.dart';
 import 'params.dart';
 import 'rows.dart';
 import 'setting_impl.dart';
+import 'string_list_setting.dart';
 import 'string_setting.dart';
 
 class MixinStoreTemplate extends StoreTemplate {
@@ -30,6 +31,7 @@ abstract class StoreTemplate {
   final Rows<StringSettingTemplate> stringSettings = Rows();
   final Rows<IntSettingTemplate> intSettings = Rows();
   final Rows<DoubleSettingTemplate> doubleSettings = Rows();
+  final Rows<StringListSettingTemplate> stringListSettings = Rows();
   final List<String> toStringList = [];
 
   bool generateToString = false;
@@ -60,6 +62,12 @@ abstract class StoreTemplate {
     _settingsImpl.addAll(
       doubleSettings.templates.whereType<SettingsImpl>().map((t) => t).toList(),
     );
+    _settingsImpl.addAll(
+      stringListSettings.templates
+          .whereType<SettingsImpl>()
+          .map((t) => t)
+          .toList(),
+    );
     sb.writeln(' Future<bool> init() async {');
     for (final setting in _settingsImpl) {
       sb.writeln(setting.preInit());
@@ -78,6 +86,8 @@ abstract class StoreTemplate {
     sb.writeln('$intSettings');
     sb.writeln();
     sb.writeln('$doubleSettings');
+    sb.writeln();
+    sb.writeln('$stringListSettings');
     sb.writeln();
     sb.writeln(' void dispose() {');
     for (final setting in _settingsImpl) {
@@ -98,6 +108,8 @@ abstract class StoreTemplate {
         ..removeWhere((element) => element.isPrivate);
       final publicDoubleSettings = doubleSettings.templates
         ..removeWhere((element) => element.isPrivate);
+      final publicStringListSettings = doubleSettings.templates
+        ..removeWhere((element) => element.isPrivate);
 
       toStringList
         ..addAll(publicBoolSettings.map(
@@ -107,6 +119,8 @@ abstract class StoreTemplate {
         ..addAll(publicIntSettings.map(
             (current) => '${current.name}: \${${current.name}.toString()}'))
         ..addAll(publicDoubleSettings.map(
+            (current) => '${current.name}: \${${current.name}.toString()}'))
+        ..addAll(publicStringListSettings.map(
             (current) => '${current.name}: \${${current.name}.toString()}'));
 
       toStringMethod = '''

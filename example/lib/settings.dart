@@ -16,8 +16,11 @@ abstract class SettingsBase with SettingsStore {
   String userId;
 
   @IntSetting(defaultValue: 0)
-  int enumIndex;
+  int counterValue;
 
   @DoubleSetting(defaultValue: 0)
   double radialValue;
+
+  @StringListSetting(defaultValue: [])
+  List<String> savedItems;
 }

@@ -49,3 +49,15 @@ class DoubleSetting {
   final bool addStream;
   final bool addValueNotifer;
 }
+
+
+class StringListSetting {
+  const StringListSetting({
+    this.defaultValue,
+    this.addStream = true,
+    this.addValueNotifer = true,
+  });
+  final List<String> defaultValue;
+  final bool addStream;
+  final bool addValueNotifer;
+}

@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:settings_gen/src/template/double_setting.dart';
 import 'package:settings_gen/src/template/int_setting.dart';
+import 'package:settings_gen/src/template/string_list_setting.dart';
 import 'package:settings_manager/settings_manager.dart';
 import 'package:settings_manager/src/api/annotations.dart'
     show BoolSetting, SettingsConfig;
@@ -34,6 +35,8 @@ class StoreClassVisitor extends SimpleElementVisitor {
   final _stringSettingChecker = const TypeChecker.fromRuntime(StringSetting);
   final _intSettingChecker = const TypeChecker.fromRuntime(IntSetting);
   final _doubleSettingChecker = const TypeChecker.fromRuntime(DoubleSetting);
+  final _stringListSettingChecker =
+      const TypeChecker.fromRuntime(StringListSetting);
 
   StoreTemplate _storeTemplate;
 
@@ -101,6 +104,20 @@ class StoreClassVisitor extends SimpleElementVisitor {
         ..isPrivate = element.isPrivate
         ..name = element.name;
       _storeTemplate.doubleSettings.add(template);
+    }
+
+    if (_stringListSettingChecker.hasAnnotationOfExact(element)) {
+      final annotation =
+          _stringListSettingChecker.firstAnnotationOfExact(element);
+      final template = StringListSettingTemplate()
+        ..defaultValue = annotation
+            .getField('defaultValue')
+            .toListValue()
+            .map((item) => item.toStringValue())
+            .toList()
+        ..isPrivate = element.isPrivate
+        ..name = element.name;
+      _storeTemplate.stringListSettings.add(template);
     }
 
     return;

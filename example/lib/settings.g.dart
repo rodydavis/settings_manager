@@ -16,13 +16,15 @@ mixin _$Settings on SettingsBase, SettingsStore {
   Future<bool> init() async {
     darkModeNotify(false);
     userIdNotify('none');
-    enumIndexNotify(0);
+    counterValueNotify(0);
     radialValueNotify(0.0);
+    savedItemsNotify([]);
     prefs = await SharedPreferences.getInstance();
     darkModeNotify(darkMode);
     userIdNotify(userId);
-    enumIndexNotify(enumIndex);
+    counterValueNotify(counterValue);
     radialValueNotify(radialValue);
+    savedItemsNotify(savedItems);
     return prefs != null;
   }
 
@@ -82,31 +84,31 @@ mixin _$Settings on SettingsBase, SettingsStore {
     _controller.add(this);
   }
 
-  final _enumIndexController = StreamController<int>.broadcast();
-  Stream<int> get enumIndexStream => _enumIndexController.stream;
-  final enumIndexNotifier = ValueNotifier<int>(null);
+  final _counterValueController = StreamController<int>.broadcast();
+  Stream<int> get counterValueStream => _counterValueController.stream;
+  final counterValueNotifier = ValueNotifier<int>(null);
 
   @override
-  int get enumIndex {
-    return prefs.getInt('enumIndex') ?? 0;
+  int get counterValue {
+    return prefs.getInt('counterValue') ?? 0;
   }
 
   @override
-  set enumIndex(int value) {
-    enumIndexAsync(value);
+  set counterValue(int value) {
+    counterValueAsync(value);
   }
 
-  Future<bool> enumIndexAsync(int value) async {
-    final success = await prefs.setInt('enumIndex', value);
+  Future<bool> counterValueAsync(int value) async {
+    final success = await prefs.setInt('counterValue', value);
     if (success) {
-      enumIndexNotify(value);
+      counterValueNotify(value);
     }
     return success;
   }
 
-  void enumIndexNotify(int value) {
-    _enumIndexController.add(value);
-    enumIndexNotifier.value = value;
+  void counterValueNotify(int value) {
+    _counterValueController.add(value);
+    counterValueNotifier.value = value;
     _controller.add(this);
   }
 
@@ -138,14 +140,44 @@ mixin _$Settings on SettingsBase, SettingsStore {
     _controller.add(this);
   }
 
+  final _savedItemsController = StreamController<List<String>>.broadcast();
+  Stream<List<String>> get savedItemsStream => _savedItemsController.stream;
+  final savedItemsNotifier = ValueNotifier<List<String>>(null);
+
+  @override
+  List<String> get savedItems {
+    return prefs.getStringList('savedItems') ?? [];
+  }
+
+  @override
+  set savedItems(List<String> value) {
+    savedItemsAsync(value);
+  }
+
+  Future<bool> savedItemsAsync(List<String> value) async {
+    final success = await prefs.setStringList('savedItems', value);
+    if (success) {
+      savedItemsNotify(value);
+    }
+    return success;
+  }
+
+  void savedItemsNotify(List<String> value) {
+    _savedItemsController.add(value);
+    savedItemsNotifier.value = value;
+    _controller.add(this);
+  }
+
   void dispose() {
     _darkModeController.close();
 
     _userIdController.close();
 
-    _enumIndexController.close();
+    _counterValueController.close();
 
     _radialValueController.close();
+
+    _savedItemsController.close();
 
     _controller.close();
   }
@@ -153,7 +185,7 @@ mixin _$Settings on SettingsBase, SettingsStore {
   @override
   String toString() {
     final string =
-        'darkMode: ${darkMode.toString()},userId: ${userId.toString()},enumIndex: ${enumIndex.toString()},radialValue: ${radialValue.toString()}';
+        'darkMode: ${darkMode.toString()},userId: ${userId.toString()},counterValue: ${counterValue.toString()},radialValue: ${radialValue.toString()},radialValue: ${radialValue.toString()}';
     return '{$string}';
   }
 }
