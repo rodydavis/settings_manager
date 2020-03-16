@@ -13,5 +13,5 @@ abstract class SettingsBase with SettingsStore {
   bool darkMode;
 
   @StringSetting(defaultValue: 'none')
-  String defaultUserId;
+  String userId;
 }

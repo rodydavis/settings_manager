@@ -15,10 +15,10 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   Future<bool> init() async {
     darkModeNotify(false);
-    _defaultUserIdController.add('none');
+    userIdNotify('none');
     prefs = await SharedPreferences.getInstance();
     darkModeNotify(darkMode);
-    _defaultUserIdController.add(defaultUserId);
+    userIdNotify(userId);
     return prefs != null;
   }
 
@@ -49,31 +49,38 @@ mixin _$Settings on SettingsBase, SettingsStore {
     _controller.add(this);
   }
 
-  final _defaultUserIdController = StreamController<String>.broadcast();
-  Stream<String> get defaultUserIdStream => _defaultUserIdController.stream;
-
+  final _userIdController = StreamController<String>.broadcast();
+  Stream<String> get userIdStream => _userIdController.stream;
+  final userIdNotifier = ValueNotifier<String>(null);
   @override
-  String get defaultUserId {
-    return prefs.getString('defaultUserId') ?? 'none';
+  String get userId {
+    return prefs.getString('userId') ?? 'none';
   }
 
   @override
-  set defaultUserId(String value) {
-    defaultUserIdAsync(value);
+  set userId(String value) {
+    userIdAsync(value);
   }
 
-  Future<bool> defaultUserIdAsync(String value) async {
-    final success = await prefs.setString('defaultUserId', value);
+  Future<bool> userIdAsync(String value) async {
+    final success = await prefs.setString('userId', value);
     if (success) {
-      _defaultUserIdController.add(value);
+      userIdNotify(value);
     }
     return success;
+  }
+
+  void userIdNotify(String value) {
+    _userIdController.add(value);
+    userIdNotifier.value = value;
+    _controller.add(this);
   }
 
   void dispose() {
     _darkModeController.close();
 
-    _defaultUserIdController.close();
+    _userIdController.close();
+
     _controller.close();
   }
 
