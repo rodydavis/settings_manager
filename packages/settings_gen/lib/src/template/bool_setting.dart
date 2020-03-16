@@ -12,7 +12,7 @@ class BoolSettingTemplate {
   }
 
   String dispose() {
-    return 'close${name}();';
+    return ' _${name}Controller.close();';
   }
 
   @override
@@ -27,19 +27,15 @@ class BoolSettingTemplate {
 
   @override
   set $name(bool value) {
-    update$name(value);
+    ${name}Async(value);
   }
 
-  Future<bool> update$name(bool value) async {
-     final sucess = await prefs.setBool('$name', value);
-     if (sucess) {
+  Future<bool> ${name}Async(bool value) async {
+     final success = await prefs.setBool('$name', value);
+     if (success) {
         _${name}Controller.add(value);
      }
-     return sucess;
-  }
-
-  void close${name}() {
-    _${name}Controller.close();
+     return success;
   }
   """;
 }
