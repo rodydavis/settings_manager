@@ -36,14 +36,15 @@ class StringSettingTemplate implements SettingsImpl {
           'Stream<String> get ${name}Stream => _${name}Controller.stream;');
     }
     if (addValueNotifier) {
-      sb.writeln('final ${name}Notifier = ValueNotifier<String>(null);');
+      sb.writeln("final _${name}Notifier = ValueNotifier<String>('$defaultValue');");
+      sb.writeln('ValueListenable<String> get ${name}Notifier => _${name}Notifier;');
     }
 
     sb.writeln("""
 
     @override
     String get $name {
-      return prefs.getString('$name') ?? '$defaultValue';
+      return prefs?.getString('$name') ?? '$defaultValue';
     }
 
     @override
@@ -66,7 +67,7 @@ class StringSettingTemplate implements SettingsImpl {
       sb.writeln(' _${name}Controller.add(value);');
     }
     if (addValueNotifier) {
-      sb.writeln('${name}Notifier.value = value;');
+      sb.writeln('_${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');
     sb.writeln('}');

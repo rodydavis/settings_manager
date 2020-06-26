@@ -36,14 +36,15 @@ class BoolSettingTemplate implements SettingsImpl {
           'Stream<bool> get ${name}Stream => _${name}Controller.stream;');
     }
     if (addValueNotifier) {
-      sb.writeln('final ${name}Notifier = ValueNotifier<bool>(null);');
+      sb.writeln('final _${name}Notifier = ValueNotifier<bool>($defaultValue);');
+      sb.writeln('ValueListenable<bool> get ${name}Notifier => _${name}Notifier;');
     }
 
     sb.writeln("""
 
     @override
     bool get $name {
-      return prefs.getBool('$name') ?? $defaultValue;
+      return prefs?.getBool('$name') ?? $defaultValue;
     }
 
     @override
@@ -66,7 +67,7 @@ class BoolSettingTemplate implements SettingsImpl {
       sb.writeln(' _${name}Controller.add(value);');
     }
     if (addValueNotifier) {
-      sb.writeln('${name}Notifier.value = value;');
+      sb.writeln('_${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');
     sb.writeln('}');

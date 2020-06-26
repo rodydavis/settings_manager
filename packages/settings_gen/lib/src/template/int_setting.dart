@@ -35,14 +35,15 @@ class IntSettingTemplate implements SettingsImpl {
       sb.writeln('Stream<int> get ${name}Stream => _${name}Controller.stream;');
     }
     if (addValueNotifier) {
-      sb.writeln('final ${name}Notifier = ValueNotifier<int>(null);');
+      sb.writeln('final _${name}Notifier = ValueNotifier<int>($defaultValue);');
+      sb.writeln('ValueListenable<int> get ${name}Notifier => _${name}Notifier;');
     }
 
     sb.writeln("""
 
     @override
     int get $name {
-      return prefs.getInt('$name') ?? $defaultValue;
+      return prefs?.getInt('$name') ?? $defaultValue;
     }
 
     @override
@@ -65,7 +66,7 @@ class IntSettingTemplate implements SettingsImpl {
       sb.writeln(' _${name}Controller.add(value);');
     }
     if (addValueNotifier) {
-      sb.writeln('${name}Notifier.value = value;');
+      sb.writeln('_${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');
     sb.writeln('}');

@@ -36,14 +36,16 @@ class DoubleSettingTemplate implements SettingsImpl {
           'Stream<double> get ${name}Stream => _${name}Controller.stream;');
     }
     if (addValueNotifier) {
-      sb.writeln('final ${name}Notifier = ValueNotifier<double>(null);');
+      sb.writeln('final _${name}Notifier = ValueNotifier<double>($defaultValue);');
+      sb.writeln(
+          'ValueListenable<double> get ${name}Notifier => _${name}Notifier;');
     }
 
     sb.writeln("""
 
     @override
     double get $name {
-      return prefs.getDouble('$name') ?? $defaultValue;
+      return prefs?.getDouble('$name') ?? $defaultValue;
     }
 
     @override
@@ -66,7 +68,7 @@ class DoubleSettingTemplate implements SettingsImpl {
       sb.writeln(' _${name}Controller.add(value);');
     }
     if (addValueNotifier) {
-      sb.writeln('${name}Notifier.value = value;');
+      sb.writeln('_${name}Notifier.value = value;');
     }
     sb.writeln('_controller.add(this);');
     sb.writeln('}');

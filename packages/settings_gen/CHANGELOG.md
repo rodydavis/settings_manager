@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Making Safer
+- Adding Null Check
+
 ## 1.0.2
 
 - Added automatic generation of `toString` method with `@StoreConfig` annotation 

@@ -30,11 +30,12 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   final _darkModeController = StreamController<bool>.broadcast();
   Stream<bool> get darkModeStream => _darkModeController.stream;
-  final darkModeNotifier = ValueNotifier<bool>(null);
+  final _darkModeNotifier = ValueNotifier<bool>(false);
+  ValueListenable<bool> get darkModeNotifier => _darkModeNotifier;
 
   @override
   bool get darkMode {
-    return prefs.getBool('darkMode') ?? false;
+    return prefs?.getBool('darkMode') ?? false;
   }
 
   @override
@@ -52,17 +53,18 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   void darkModeNotify(bool value) {
     _darkModeController.add(value);
-    darkModeNotifier.value = value;
+    _darkModeNotifier.value = value;
     _controller.add(this);
   }
 
   final _userIdController = StreamController<String>.broadcast();
   Stream<String> get userIdStream => _userIdController.stream;
-  final userIdNotifier = ValueNotifier<String>(null);
+  final _userIdNotifier = ValueNotifier<String>('none');
+  ValueListenable<String> get userIdNotifier => _userIdNotifier;
 
   @override
   String get userId {
-    return prefs.getString('userId') ?? 'none';
+    return prefs?.getString('userId') ?? 'none';
   }
 
   @override
@@ -80,17 +82,18 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   void userIdNotify(String value) {
     _userIdController.add(value);
-    userIdNotifier.value = value;
+    _userIdNotifier.value = value;
     _controller.add(this);
   }
 
   final _counterValueController = StreamController<int>.broadcast();
   Stream<int> get counterValueStream => _counterValueController.stream;
-  final counterValueNotifier = ValueNotifier<int>(null);
+  final _counterValueNotifier = ValueNotifier<int>(0);
+  ValueListenable<int> get counterValueNotifier => _counterValueNotifier;
 
   @override
   int get counterValue {
-    return prefs.getInt('counterValue') ?? 0;
+    return prefs?.getInt('counterValue') ?? 0;
   }
 
   @override
@@ -108,17 +111,18 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   void counterValueNotify(int value) {
     _counterValueController.add(value);
-    counterValueNotifier.value = value;
+    _counterValueNotifier.value = value;
     _controller.add(this);
   }
 
   final _radialValueController = StreamController<double>.broadcast();
   Stream<double> get radialValueStream => _radialValueController.stream;
-  final radialValueNotifier = ValueNotifier<double>(null);
+  final _radialValueNotifier = ValueNotifier<double>(0.0);
+  ValueListenable<double> get radialValueNotifier => _radialValueNotifier;
 
   @override
   double get radialValue {
-    return prefs.getDouble('radialValue') ?? 0.0;
+    return prefs?.getDouble('radialValue') ?? 0.0;
   }
 
   @override
@@ -136,17 +140,18 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   void radialValueNotify(double value) {
     _radialValueController.add(value);
-    radialValueNotifier.value = value;
+    _radialValueNotifier.value = value;
     _controller.add(this);
   }
 
   final _savedItemsController = StreamController<List<String>>.broadcast();
   Stream<List<String>> get savedItemsStream => _savedItemsController.stream;
-  final savedItemsNotifier = ValueNotifier<List<String>>(null);
+  final _savedItemsNotifier = ValueNotifier<List<String>>([]);
+  ValueListenable<List<String>> get savedItemsNotifier => _savedItemsNotifier;
 
   @override
   List<String> get savedItems {
-    return prefs.getStringList('savedItems') ?? [];
+    return prefs?.getStringList('savedItems') ?? [];
   }
 
   @override
@@ -164,7 +169,7 @@ mixin _$Settings on SettingsBase, SettingsStore {
 
   void savedItemsNotify(List<String> value) {
     _savedItemsController.add(value);
-    savedItemsNotifier.value = value;
+    _savedItemsNotifier.value = value;
     _controller.add(this);
   }
 
